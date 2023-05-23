@@ -4,12 +4,14 @@ import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import axios from "axios";
 import phoneService from "./services/Numbers";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     phoneService.getAll().then((numbers) => setPersons(numbers));
@@ -28,22 +30,23 @@ const App = () => {
       });
       setNewName("");
       setNewNumber("");
+      setErrorMessage(`Added ${newPerson.name}`);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
     } else {
       if (
         window.confirm(
           `${newName} is already added to phonebook, replace the old number with a new one?`
         )
-      ) 
-       {
+      ) {
         const newPerson = {
           name: newName,
           number: newNumber,
         };
         phoneService.update(findName[0].id, newPerson).then((p) => {
           setPersons(
-            persons.map((person) =>
-            person.id === findName[0].id ? p : person
-            )
+            persons.map((person) => (person.id === findName[0].id ? p : person))
           );
         });
         setNewName("");
@@ -59,7 +62,10 @@ const App = () => {
         .remove(id)
         .then((numbers) =>
           setPersons(persons.filter((person) => person.id !== id))
-        );
+        )
+        .catch((error) => {
+          setErrorMessage(`${person[0].name} has already been removed from the server`);
+        });
     }
   };
 
@@ -82,6 +88,7 @@ const App = () => {
   return (
     <div>
       <h2>PhoneBook</h2>
+      <Notification message={errorMessage} />
       <Filter search={search} handleChange={handleSearchChange} />
       <h2>add a new</h2>
       <PersonForm
