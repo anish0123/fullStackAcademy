@@ -9,6 +9,8 @@ import CountryList from "./components/CountryList";
 const App = () => {
   const [value, setValue] = useState("");
   const [countries, setCountries] = useState([]);
+  
+
 
   const handleValueChange = (event) => {
     setValue(event.target.value);
@@ -18,6 +20,7 @@ const App = () => {
     console.log("fetching countries");
     ApiService.getCountries().then((countries) => setCountries(countries));
   };
+
 
   useEffect(() => {
     getCountries();
@@ -54,7 +57,7 @@ const App = () => {
     return (
       <>
         <SearchBar value={value} handleValueChange={handleValueChange} />
-        <SingleCountry country={country} />
+        <SingleCountry country={country}/>
       </>
     );
   }
