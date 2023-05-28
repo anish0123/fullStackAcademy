@@ -19,6 +19,7 @@ const Footer = () => {
   );
 };
 
+// Front end for my note book which is deployed later in render
 const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("a new note ....");
