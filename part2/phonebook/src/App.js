@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
-import axios from "axios";
 import phoneService from "./services/Numbers";
 import Notification from "./components/Notification";
 
