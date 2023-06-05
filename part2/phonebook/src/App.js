@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     phoneService.getAll().then((numbers) => setPersons(numbers));
@@ -25,13 +26,22 @@ const App = () => {
         number: newNumber,
       };
       phoneService.create(newPerson).then((person) => {
-        setPersons(persons.concat(person));
+        console.log(
+          "🚀 ~ file: App.js:29 ~ phoneService.create ~ person:",
+          person
+        );
+        if (person.error === undefined) {
+          setPersons(persons.concat(person));
+          setMessage(`Added ${person.name}`);
+        } else {
+          setErrorMessage(person.error);
+        }
       });
       setNewName("");
       setNewNumber("");
-      setErrorMessage(`Added ${newPerson.name}`);
       setTimeout(() => {
         setErrorMessage("");
+        setMessage("");
       }, 5000);
     } else {
       if (
@@ -44,12 +54,24 @@ const App = () => {
           number: newNumber,
         };
         phoneService.update(findName[0].id, newPerson).then((p) => {
-          setPersons(
-            persons.map((person) => (person.id === findName[0].id ? p : person))
-          );
+          if (p.error === undefined) {
+            setPersons(
+              persons.map((person) =>
+                person.id === findName[0].id ? p : person
+                
+              )
+            );
+            setMessage(`Updated  ${newPerson.name} with new number ${newNumber}`)
+          } else {
+            setErrorMessage(p.error);
+          }
         });
         setNewName("");
         setNewNumber("");
+        setTimeout(() => {
+          setErrorMessage("");
+          setMessage("");
+        }, 5000);
       }
     }
   };
@@ -63,7 +85,9 @@ const App = () => {
           setPersons(persons.filter((person) => person.id !== id))
         )
         .catch((error) => {
-          setErrorMessage(`${person[0].name} has already been removed from the server`);
+          setErrorMessage(
+            `${person[0].name} has already been removed from the server`
+          );
         });
     }
   };
@@ -87,7 +111,7 @@ const App = () => {
   return (
     <div>
       <h2>PhoneBook</h2>
-      <Notification message={errorMessage} />
+      <Notification errorMessage={errorMessage} message={message} />
       <Filter search={search} handleChange={handleSearchChange} />
       <h2>add a new</h2>
       <PersonForm
