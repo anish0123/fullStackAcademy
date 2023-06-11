@@ -39,7 +39,7 @@ test("a valid blog can be added", async () => {
   expect(contents).toContain("aaaa2123a");
 });
 
-test("a blog without title is not added", async () => {
+test("a blog without title, author and url is not added", async () => {
   const newBlog = {
     likes: 1,
   };
@@ -80,6 +80,27 @@ test("a blog can be deleted", async () => {
 test("a blog's id is defined", async () => {
   const blogsAtStart = await helper.blogsInDb();
   expect(blogsAtStart[0].id).toBeDefined();
+});
+
+test("a blog without likes will result in 0 likes", async () => {
+  const newBlog = {
+    _id: "5a422a851b54a676234d17f7",
+    title: "Likes should be zero",
+    author: "Anish Maharjan",
+    url: "https://reactpatterns.com/",
+    __v: 0,
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+  const contents = blogsAtEnd.map((r) => r.likes);
+  expect(contents[helper.initialBlogs.length]).toEqual(0);
 });
 
 afterAll(async () => {
