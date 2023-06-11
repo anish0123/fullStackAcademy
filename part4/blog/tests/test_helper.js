@@ -45,9 +45,9 @@ const initialBlogs = [
 
 const nonExistingId = async () => {
   const blog = new Blog({
-    title: "will delete soon",
-    author: "ajshdkjas",
-    url: "jakshdjkahs",
+    title: "non existingI ID",
+    author: "Anish Maharjan",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
   });
 
   await blog.save();
