@@ -37,3 +37,7 @@ describe("when there is initially one user in db", () => {
     expect(usernames).toContain(newUser.username);
   });
 });
+
+afterAll(async () => {
+  await mongoose.connection.close();
+});
