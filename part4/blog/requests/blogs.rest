@@ -1,0 +1,14 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuaXNoMDEyMyIsImlkIjoiNjQ4OGExZTNkMDUxNTU3MGMyMDA2YjcyIiwiaWF0IjoxNjg2NzYyNzI3fQ.u368Uyt9A2YPSmJM81xqpNO6Vvy-cxNU1oiJqu1FDpk
+
+{
+     "title": "testing middleware",
+      "author": "Michael Chan",
+      "url": "https://reactpatterns.com/",
+      "likes": 7
+}
+
+###
+DELETE http://localhost:3003/api/blogs/6489f23d243f46b5e69260c9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuaXNoMDEyMyIsImlkIjoiNjQ4OGExZTNkMDUxNTU3MGMyMDA2YjcyIiwiaWF0IjoxNjg2NzYwMDU3fQ.wPXAXnW4QhRvE8wKsHGBL8j9-A-N3z1LWMQ6nc4Xh2o
