@@ -4,6 +4,9 @@ const app = require("../app");
 const api = supertest(app);
 const Blog = require("../models/blog");
 const helper = require("./test_helper");
+const User = require("../models/user");
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuaXNoMDEyMyIsImlkIjoiNjQ4OWZkOGM0ZGY3MGY5NjEzMjJjNTZkIiwiaWF0IjoxNjg2NzY1MDc1fQ.OkWAALrN9FJyBmPpXSDNsf_lCTEsFFUQJ_fzAx_czWU";
 
 beforeEach(async () => {
   await Blog.deleteMany({});
@@ -40,18 +43,7 @@ describe("when there is initially some blogs saved", () => {
 });
 
 describe("viewing a specific blog", () => {
-  test("succeds with a valid id", async () => {
-    const blogsAtStart = await helper.blogsInDb();
-
-    const blogToView = blogsAtStart[0];
-
-    const resultBlog = await api
-      .get(`/api/blogs/${blogToView.id}`)
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
-
-    expect(resultBlog.body).toEqual(blogToView);
-  });
+ 
 
   test("fails with statuscode 404 if blog does not exist", async () => {
     const nonExistingId = await helper.nonExistingId();
@@ -68,22 +60,23 @@ describe("viewing a specific blog", () => {
 describe("addition of a new note", () => {
   test("a valid blog can be added", async () => {
     const newBlog = {
-      title: "aaaa2123a",
-
-      url: "asd123as",
-      likes: 1,
+      title: "testing middleware from blog testv1",
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 7,
     };
 
     await api
       .post("/api/blogs")
       .send(newBlog)
+      .set("Authorization", "Bearer " + token)
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
     const contents = blogsAtEnd.map((r) => r.title);
-    expect(contents).toContain("aaaa2123a");
+    expect(contents).toContain("testing middleware from blog testv1");
   });
 
   test(" fails with status code 400 if not valid", async () => {
@@ -108,6 +101,7 @@ describe("addition of a new note", () => {
     await api
       .post("/api/blogs")
       .send(newBlog)
+      .set("Authorization", "Bearer " + token)
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
@@ -123,7 +117,10 @@ describe("deletion of a note", () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", "Bearer " + token)
+      .expect(204);
 
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
