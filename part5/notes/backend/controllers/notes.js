@@ -32,9 +32,7 @@ const getTokenFrom = (request) => {
 
 notesRouter.post("/", async (request, response) => {
   const body = request.body;
-  console.log("notes post", request.body);
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
-  console.log("token", decodedToken);
   if (!decodedToken.id) {
     return response.status(401).json({ error: "invalid token" });
   }
