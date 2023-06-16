@@ -78,7 +78,8 @@ const App = () => {
   const editBlog = async (blogObject) => {
     try {
       const editedBlog = await blogService.updateBlog(blogObject);
-      console.log("editedBlog", editedBlog);
+      console.log("editedBlog", editedBlog)
+     setUpdate(!update)
     } catch (exception) {
       console.log("editing blog error", exception);
     }

@@ -16,14 +16,16 @@ const createBlog = async (blogObject) => {
     headers : {Authorization : token}
   }
   const response = await axios.post(baseUrl, blogObject, config)
+  console.log("create blog", response)
   return response.data
 }
 
-const updateBlog = async(blogObject) => {
+const updateBlog = async (blogObject) => {
   const config = {
     headers : {Authorization : token}
   }
-  const response = await axios.put(`${baseUrl}/${blogObject.id}`, blogObject, config)
+  const response =  await axios.put(`${baseUrl}/${blogObject.id}`, blogObject, config)
+  console.log("response update blog", response)
   return response.data
 }
 

@@ -16,8 +16,15 @@ const Blog = ({ blog, editBlog }) => {
 
   const updateBlog = (event) => {
     event.preventDefault();
-    blog.likes = blog.likes++;
-    editBlog(blog)
+   
+    editBlog({
+      title: blog.title,
+      author : blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id,
+      id: blog.id
+    })
   }
 
   const smallDetails = () => (
