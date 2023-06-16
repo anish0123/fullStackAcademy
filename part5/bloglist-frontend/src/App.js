@@ -3,21 +3,23 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
+import Togglable from "./components/TogglableComponent";
+import BlogForm from "./components/NoteForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, SetUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
+    console.log("working ");
+    console.log("update", update);
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, [update]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -38,8 +40,8 @@ const App = () => {
       setPassword("");
       setMessage("Login successful");
       setTimeout(() => {
-        setMessage(null)
-      },5000)
+        setMessage(null);
+      }, 5000);
     } catch (exception) {
       setErrorMessage("Wrong username or password");
       setTimeout(() => {
@@ -53,20 +55,11 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogappUser");
   };
 
-  const addBlog = (event) => {
-    event.preventDefault();
+  const addBlog = async (blogObject) => {
     try {
-      const blogObject = {
-        author: author,
-        title: title,
-        url: url,
-      };
-      blogService.createBlog(blogObject).then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-      });
-      setAuthor("");
-      setTitle("");
-      setUrl("");
+      const response = await blogService.createBlog(blogObject);
+      console.log("addblog", response);
+      setUpdate(!update);
       setMessage(
         `a new Blog ${blogObject.title} by ${blogObject.author} added`
       );
@@ -79,6 +72,26 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
+    }
+  };
+
+  const editBlog = async (blogObject) => {
+    try {
+      const editedBlog = await blogService.updateBlog(blogObject);
+      console.log("editedBlog", editedBlog);
+      setUpdate(!update);
+    } catch (exception) {
+      console.log("editing blog error", exception);
+    }
+  };
+
+  const deleteBlog = async (id) => {
+    try {
+      const deleteBlog = await blogService.deleteBlog(id);
+      console.log("deleteBlog", deleteBlog);
+      setUpdate(!update);
+    } catch (exception) {
+      console.log("editing blog error", exception);
     }
   };
 
@@ -122,43 +135,11 @@ const App = () => {
           </p>
         </div>
       )}
-      <div>
-        <h2>create new</h2>
-        <form onSubmit={addBlog}>
-          <div>
-            title:{" "}
-            <input
-              type="text"
-              value={title}
-              name="Title"
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </div>
-          <div>
-            author:{" "}
-            <input
-              type="text"
-              value={author}
-              name="Author"
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </div>
-          <div>
-            url:{" "}
-            <input
-              type="text"
-              value={url}
-              name="Url"
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </div>
-          <div>
-            <button type="submit">create</button>
-          </div>
-        </form>
-      </div>
+      <Togglable buttonLabel="new blog">
+        <BlogForm submitForm={addBlog} />
+      </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} editBlog={editBlog} deleteBlog={deleteBlog}/>
       ))}
     </div>
   );

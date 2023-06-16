@@ -73,7 +73,9 @@ blogsRouter.put("/:id", async (request, response) => {
     runValidators: true,
     context: "query",
   });
-  response.send(204).json(updatedBlog);
+  console.log("backend put", updatedBlog);
+  response.json(updatedBlog);
 });
+
 
 module.exports = blogsRouter;

@@ -31,4 +31,5 @@ const update = (id, newObject) => {
   return request.then((respnse) => respnse.data);
 };
 
+
 export default { getAll, create, update, setToken };
