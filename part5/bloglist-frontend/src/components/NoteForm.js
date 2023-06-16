@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const NoteForm = ({submitForm}) => {
+const BlogForm = ({submitForm}) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -57,4 +57,4 @@ const NoteForm = ({submitForm}) => {
   )
 };
 
-export default NoteForm;
+export default BlogForm;

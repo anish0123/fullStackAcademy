@@ -4,7 +4,7 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Togglable from "./components/TogglableComponent";
-import NoteForm from "./components/NoteForm";
+import BlogForm from "./components/NoteForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, [blogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -113,7 +113,7 @@ const App = () => {
         </div>
       )}
       <Togglable buttonLabel="new blog">
-        <NoteForm submitForm={addBlog} />
+        <BlogForm submitForm={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
