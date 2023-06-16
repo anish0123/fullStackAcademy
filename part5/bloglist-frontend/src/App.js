@@ -13,10 +13,13 @@ const App = () => {
   const [user, SetUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [message, setMessage] = useState(null);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
+    console.log("working ");
+    console.log("update", update);
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, [blogs]);
+  }, [update]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -52,11 +55,11 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogappUser");
   };
 
-  const addBlog = (blogObject) => {
+  const addBlog = async (blogObject) => {
     try {
-      blogService.createBlog(blogObject).then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-      });
+      const response = await blogService.createBlog(blogObject);
+      console.log("addblog",response)
+      setUpdate(!update);
       setMessage(
         `a new Blog ${blogObject.title} by ${blogObject.author} added`
       );
@@ -69,6 +72,15 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
+    }
+  };
+
+  const editBlog = async (blogObject) => {
+    try {
+      const editedBlog = await blogService.updateBlog(blogObject);
+      console.log("editedBlog", editedBlog);
+    } catch (exception) {
+      console.log("editing blog error", exception);
     }
   };
 
@@ -116,7 +128,7 @@ const App = () => {
         <BlogForm submitForm={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} editBlog={editBlog} />
       ))}
     </div>
   );
