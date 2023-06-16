@@ -58,7 +58,7 @@ const App = () => {
   const addBlog = async (blogObject) => {
     try {
       const response = await blogService.createBlog(blogObject);
-      console.log("addblog",response)
+      console.log("addblog", response);
       setUpdate(!update);
       setMessage(
         `a new Blog ${blogObject.title} by ${blogObject.author} added`
@@ -78,8 +78,18 @@ const App = () => {
   const editBlog = async (blogObject) => {
     try {
       const editedBlog = await blogService.updateBlog(blogObject);
-      console.log("editedBlog", editedBlog)
-     setUpdate(!update)
+      console.log("editedBlog", editedBlog);
+      setUpdate(!update);
+    } catch (exception) {
+      console.log("editing blog error", exception);
+    }
+  };
+
+  const deleteBlog = async (id) => {
+    try {
+      const deleteBlog = await blogService.deleteBlog(id);
+      console.log("deleteBlog", deleteBlog);
+      setUpdate(!update);
     } catch (exception) {
       console.log("editing blog error", exception);
     }
@@ -129,7 +139,7 @@ const App = () => {
         <BlogForm submitForm={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} editBlog={editBlog} />
+        <Blog key={blog.id} blog={blog} editBlog={editBlog} deleteBlog={deleteBlog}/>
       ))}
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog, editBlog }) => {
+const Blog = ({ blog, editBlog, deleteBlog }) => {
   const [detailVisibility, setDetailVisibility] = useState(false);
 
   const toggleVisibility = () => {
@@ -16,16 +16,20 @@ const Blog = ({ blog, editBlog }) => {
 
   const updateBlog = (event) => {
     event.preventDefault();
-   
+
     editBlog({
       title: blog.title,
-      author : blog.author,
+      author: blog.author,
       url: blog.url,
       likes: blog.likes + 1,
       user: blog.user.id,
-      id: blog.id
-    })
-  }
+      id: blog.id,
+    });
+  };
+  const removeBlog = (event) => {
+    event.preventDefault();
+    deleteBlog(blog.id)
+  };
 
   const smallDetails = () => (
     <div style={blogStyle}>
@@ -52,6 +56,9 @@ const Blog = ({ blog, editBlog }) => {
           likes {blog.likes} <button onClick={updateBlog}>likes</button>
         </div>
         <div>{blog.user.name}</div>
+      </div>
+      <div>
+        <button onClick={removeBlog}>remove</button>
       </div>
     </div>
   );
