@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, editBlog, deleteBlog }) => {
-  const [detailVisibility, setDetailVisibility] = useState(false);
+  const [detailVisibility, setDetailVisibility] = useState(false)
 
   const toggleVisibility = () => {
-    setDetailVisibility(!detailVisibility);
-  };
+    setDetailVisibility(!detailVisibility)
+  }
 
   const blogStyle = {
-    border: "solid",
+    border: 'solid',
     marginTop: 10,
     padding: 5,
     fontSize: 20,
-  };
+  }
 
   const updateBlog = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     editBlog({
       title: blog.title,
@@ -24,12 +25,12 @@ const Blog = ({ blog, editBlog, deleteBlog }) => {
       likes: blog.likes + 1,
       user: blog.user.id,
       id: blog.id,
-    });
-  };
+    })
+  }
   const removeBlog = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     deleteBlog(blog.id)
-  };
+  }
 
   const smallDetails = () => (
     <div style={blogStyle}>
@@ -40,7 +41,7 @@ const Blog = ({ blog, editBlog, deleteBlog }) => {
         </button>
       </div>
     </div>
-  );
+  )
 
   const fullDetails = () => (
     <div style={blogStyle}>
@@ -61,9 +62,15 @@ const Blog = ({ blog, editBlog, deleteBlog }) => {
         <button onClick={removeBlog}>remove</button>
       </div>
     </div>
-  );
+  )
 
-  return <div>{detailVisibility ? fullDetails() : smallDetails()}</div>;
-};
+  return <div>{detailVisibility ? fullDetails() : smallDetails()}</div>
+}
 
-export default Blog;
+Blog.propTypes = {
+  Blog: PropTypes.object,
+  editBlog: PropTypes.func,
+  deleteBlog: PropTypes.func,
+}
+
+export default Blog
