@@ -29,6 +29,7 @@ const BlogForm = ({ submitForm }) => {
             value={title}
             name="Title"
             onChange={(event) => setTitle(event.target.value)}
+            placeholder='Title'
           />
         </div>
         <div>
@@ -38,6 +39,7 @@ const BlogForm = ({ submitForm }) => {
             value={author}
             name="Author"
             onChange={(event) => setAuthor(event.target.value)}
+            placeholder='Author'
           />
         </div>
 
@@ -48,6 +50,7 @@ const BlogForm = ({ submitForm }) => {
             value={url}
             name="Url"
             onChange={(event) => setUrl(event.target.value)}
+            placeholder='Url'
           />
         </div>
         <div>
