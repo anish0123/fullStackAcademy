@@ -6,7 +6,13 @@ describe('Blog app', function () {
       username: 'anish0123',
       password: 'secret',
     }
+    const user2 = {
+      name: 'Tester',
+      username: 'test123',
+      password : 'secret',
+    }
     cy.request('POST', 'http://localhost:3003/api/users', user)
+    cy.request('POST', 'http://localhost:3003/api/users', user2)
     cy.visit('http://localhost:3000')
   })
 
@@ -86,6 +92,16 @@ describe('Blog app', function () {
           cy.contains('remove').click()
 
           cy.should('not.contain', 'creating another cypress blog anish maharjan')
+        })
+
+        it('only uploading user is able to see remove button', function() {
+          cy.contains('logout').click()
+          cy.login({ username: 'test123', password: 'secret' })
+
+          cy.contains('creating another cypress blog anish maharjan')
+            .contains('view')
+
+          cy.should('not.contain', 'remove')
         })
       })
     })

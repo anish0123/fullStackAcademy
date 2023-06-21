@@ -117,7 +117,7 @@ const App = () => {
         <BlogForm submitForm={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} editBlog={editBlog} deleteBlog={deleteBlog}/>
+        <Blog key={blog.id} blog={blog} editBlog={editBlog} deleteBlog={deleteBlog} user={user} />
       ))}
     </div>
   )
