@@ -5,11 +5,10 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/TogglableComponent'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, SetUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
@@ -31,14 +30,11 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const handleLogin = async (credentials) => {
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login(credentials)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       SetUser(user)
-      setUsername('')
-      setPassword('')
       setMessage('Login successful')
       setTimeout(() => {
         setMessage(null)
@@ -101,27 +97,7 @@ const App = () => {
     <div>
       <h2>log in to application</h2>
       <Notification message={message} errorMessage={errorMessage} />
-      <form onSubmit={handleLogin}>
-        <div>
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <div>
-          <button type="submit">login</button>
-        </div>
-      </form>
+      <LoginForm handleLogin={handleLogin} />
     </div>
   )
 
@@ -141,7 +117,7 @@ const App = () => {
         <BlogForm submitForm={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} editBlog={editBlog} deleteBlog={deleteBlog}/>
+        <Blog key={blog.id} blog={blog} editBlog={editBlog} deleteBlog={deleteBlog} user={user} />
       ))}
     </div>
   )
