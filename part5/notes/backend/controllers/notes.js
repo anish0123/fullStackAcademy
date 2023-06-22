@@ -63,11 +63,7 @@ notesRouter.put("/:id", (request, response, next) => {
     important: body.important,
   };
 
-  Note.findByIdAndUpdate(request.params.id, body, {
-    new: true,
-    runValidators: true,
-    context: "query",
-  })
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
     .then((updatedNote) => {
       response.json(updatedNote);
     })
