@@ -33,7 +33,7 @@ const Blog = ({ blog, editBlog, deleteBlog, user }) => {
   }
 
   const smallDetails = () => (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
         {blog.title} {blog.author}
         <button onClick={toggleVisibility} style={{ marginLeft: 15 }}>
@@ -44,7 +44,7 @@ const Blog = ({ blog, editBlog, deleteBlog, user }) => {
   )
 
   const fullDetails = () => (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
         <div>
           {blog.title} {blog.author}
@@ -54,7 +54,7 @@ const Blog = ({ blog, editBlog, deleteBlog, user }) => {
         </div>
         <div>{blog.url}</div>
         <div>
-          likes {blog.likes} <button onClick={updateBlog}>likes</button>
+          likes {blog.likes} <button className="like-button" onClick={updateBlog}>likes</button>
         </div>
         <div>{blog.user.name} </div>
       </div>

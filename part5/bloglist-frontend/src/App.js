@@ -14,11 +14,11 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [update, setUpdate] = useState(false)
   const blogFormRef = useRef()
-
+  const compareNumbers = (a,b) => {
+    return b.likes - a.likes
+  }
   useEffect(() => {
-    console.log('working ')
-    console.log('update', update)
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    blogService.getAll().then((blogs) => setBlogs(blogs.sort(compareNumbers)))
   }, [update])
 
   useEffect(() => {
